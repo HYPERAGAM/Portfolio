@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-purple-100 min-h-screen">
+  <nav class="flex flex-col sm:flex-row justify-between items-center p-4 sm:p-6 bg-white/80 shadow-md gap-2 sm:gap-0">
+    <h1 class="text-2xl sm:text-3xl font-bold text-purple-700">Admin Dashboard</h1>
+    <div class="flex gap-4">
+      <a href="/logout" class="text-base sm:text-lg text-red-500 hover:underline">Logout</a>
+      <a href="/" class="text-base sm:text-lg font-semibold text-purple-600 hover:underline">View Portfolio</a>
+    </div>
+  </nav>
+  <main class="max-w-4xl mx-auto py-8 sm:py-12 px-2 sm:px-4">
+    <!-- About Edit -->
+    <h2 class="text-xl sm:text-2xl font-bold text-purple-700 mb-4">Edit About</h2>
+    <form method="POST" enctype="multipart/form-data" class="bg-white p-4 sm:p-6 rounded-xl shadow mb-10" autocomplete="off">
+      <input type="hidden" name="about_form" value="1">
+      <div class="mb-4">
+        <label class="block text-gray-700 mb-2">Name</label>
+        <input type="text" name="name" value="{{ about.name }}" class="w-full border border-gray-300 rounded px-3 py-2" required>
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 mb-2">Tagline</label>
+        <input type="text" name="tagline" value="{{ about.tagline }}" class="w-full border border-gray-300 rounded px-3 py-2">
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 mb-2">Bio</label>
+        <textarea name="bio" class="w-full border border-gray-300 rounded px-3 py-2">{{ about.bio }}</textarea>
+      </div>
+      <div class="mb-4 flex flex-col sm:flex-row gap-4 items-center">
+        <div class="flex-1">
+          <label class="block text-gray-700 mb-2">Photo URL</label>
+          <input type="text" name="photo" value="{{ about.photo }}" class="w-full border border-gray-300 rounded px-3 py-2">
+          {% if about.photo %}
+          <img src="{{ about.photo }}" alt="Current Photo" class="w-20 h-20 rounded-full mt-2 border-2 border-purple-300 object-cover">
+          {% endif %}
+        </div>
+        <div class="flex flex-col items-center justify-center">
+          <span class="text-gray-500 font-semibold mb-2">or</span>
+          <input type="file" name="photo_file" accept="image/*" class="w-full border border-gray-300 rounded px-3 py-2">
+        </div>
+      </div>
+      <button type="submit" class="w-full bg-purple-600 text-white py-2 rounded font-semibold hover:bg-purple-700 transition">Update About</button>
+    </form>
+
+    <!-- Contact Edit -->
+    <h2 class="text-xl sm:text-2xl font-bold text-purple-700 mb-4">Edit Contact</h2>
+    <form method="POST" class="bg-white p-4 sm:p-6 rounded-xl shadow mb-10" autocomplete="off">
+      <input type="hidden" name="contact_form" value="1">
+      <div class="mb-4">
+        <label class="block text-gray-700 mb-2">Email</label>
+        <input type="email" name="email" value="{{ contact.email }}" class="w-full border border-gray-300 rounded px-3 py-2">
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 mb-2">Phone</label>
+        <input type="text" name="phone" value="{{ contact.phone }}" class="w-full border border-gray-300 rounded px-3 py-2">
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 mb-2">LinkedIn</label>
+        <input type="text" name="linkedin" value="{{ contact.linkedin }}" class="w-full border border-gray-300 rounded px-3 py-2">
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 mb-2">GitHub</label>
+        <input type="text" name="github" value="{{ contact.github }}" class="w-full border border-gray-300 rounded px-3 py-2">
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 mb-2">Address</label>
+        <input type="text" name="address" value="{{ contact.address }}" class="w-full border border-gray-300 rounded px-3 py-2">
+      </div>
+      <button type="submit" class="w-full bg-purple-600 text-white py-2 rounded font-semibold hover:bg-purple-700 transition">Update Contact</button>
+    </form>
+
+    <!-- Skills Edit -->
+    <h2 class="text-xl sm:text-2xl font-bold text-purple-700 mb-4">Skills</h2>
+    <form method="POST" class="bg-white p-4 sm:p-6 rounded-xl shadow mb-6 flex flex-col sm:flex-row gap-4 items-end" autocomplete="off">
+      <input type="hidden" name="skill_form" value="1">
+      <div class="flex-1">
+        <label class="block text-gray-700 mb-2">Skill Name</label>
+        <input type="text" name="skill_name" class="w-full border border-gray-300 rounded px-3 py-2">
+      </div>
+      <div class="flex-1">
+        <label class="block text-gray-700 mb-2">Level</label>
+        <select name="skill_level" class="w-full border border-gray-300 rounded px-3 py-2">
+          <option>Beginner</option>
+          <option>Intermediate</option>
+          <option>Expert</option>
+        </select>
+      </div>
+      <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded font-semibold hover:bg-purple-700 transition">Add Skill</button>
+    </form>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-10">
+      {% for skill in skills %}
+      <div class="bg-white rounded shadow p-4 flex flex-col items-center relative">
+        <div class="text-lg font-bold text-purple-700">{{ skill.name }}</div>
+        <div class="text-gray-500">{{ skill.level }}</div>
+        <form method="POST" action="/delete_skill/{{ skill.id }}" onsubmit="return confirm('Delete this skill?');" class="absolute top-2 right-2">
+          <button type="submit" class="bg-red-500 text-white rounded px-2 py-1 text-xs hover:bg-red-600">Delete</button>
+        </form>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Experience Edit -->
+    <h2 class="text-xl sm:text-2xl font-bold text-purple-700 mb-4">Experience</h2>
+    <form method="POST" class="bg-white p-4 sm:p-6 rounded-xl shadow mb-6 grid grid-cols-1 md:grid-cols-2 gap-4" autocomplete="off">
+      <input type="hidden" name="exp_form" value="1">
+      <div>
+        <label class="block text-gray-700 mb-2">Title</label>
+        <input type="text" name="exp_title" class="w-full border border-gray-300 rounded px-3 py-2">
+      </div>
+      <div>
+        <label class="block text-gray-700 mb-2">Company</label>
+        <input type="text" name="exp_company" class="w-full border border-gray-300 rounded px-3 py-2">
+      </div>
+      <div>
+        <label class="block text-gray-700 mb-2">Start Year</label>
+        <input type="text" name="exp_start" class="w-full border border-gray-300 rounded px-3 py-2">
+      </div>
+      <div>
+        <label class="block text-gray-700 mb-2">End Year</label>
+        <input type="text" name="exp_end" class="w-full border border-gray-300 rounded px-3 py-2">
+      </div>
+      <div class="md:col-span-2">
+        <label class="block text-gray-700 mb-2">Description</label>
+        <textarea name="exp_desc" class="w-full border border-gray-300 rounded px-3 py-2"></textarea>
+      </div>
+      <div class="md:col-span-2 flex justify-end">
+        <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded font-semibold hover:bg-purple-700 transition">Add Experience</button>
+      </div>
+    </form>
+    <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 mb-10">
+      {% for exp in experience %}
+      <div class="bg-white rounded-xl shadow-lg overflow-hidden relative p-4">
+        <div class="text-lg font-bold text-purple-700">{{ exp.title }}</div>
+        <div class="text-gray-700">{{ exp.company }} ({{ exp.start_year }} - {{ exp.end_year }})</div>
+        <div class="text-gray-500 mt-2">{{ exp.description }}</div>
+        <form method="POST" action="/delete_experience/{{ exp.id }}" onsubmit="return confirm('Delete this experience?');" class="absolute top-2 right-2">
+          <button type="submit" class="bg-red-500 text-white rounded px-2 py-1 text-xs hover:bg-red-600">Delete</button>
+        </form>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Projects Edit (existing) -->
+    <h2 class="text-xl sm:text-2xl font-bold text-purple-700 mb-4">Projects</h2>
+    <form method="POST" enctype="multipart/form-data" class="bg-white p-4 sm:p-6 rounded-xl shadow mb-10" autocomplete="off">
+      <div class="mb-4">
+        <label class="block text-gray-700 mb-2">Title</label>
+        <input type="text" name="title" class="w-full border border-gray-300 rounded px-3 py-2">
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 mb-2">Text</label>
+        <textarea name="text" class="w-full border border-gray-300 rounded px-3 py-2"></textarea>
+      </div>
+      <div class="mb-4 flex flex-col sm:flex-row gap-4 items-center">
+        <div class="flex-1">
+          <label class="block text-gray-700 mb-2">Image URL</label>
+          <input type="text" name="image" class="w-full border border-gray-300 rounded px-3 py-2">
+        </div>
+        <div class="flex flex-col items-center justify-center">
+          <span class="text-gray-500 font-semibold mb-2">or</span>
+          <input type="file" name="image_file" accept="image/*" class="w-full border border-gray-300 rounded px-3 py-2">
+        </div>
+      </div>
+      <button type="submit" class="w-full bg-purple-600 text-white py-2 rounded font-semibold hover:bg-purple-700 transition">Add Project</button>
+    </form>
+    <div class="grid gap-6 grid-cols-1 sm:grid-cols-2">
+      {% for item in content %}
+      <div class="bg-white rounded-xl shadow-lg overflow-hidden relative">
+        {% if item.image %}
+        <img src="{{ item.image }}" alt="{{ item.title }}" class="w-full h-40 object-cover">
+        {% endif %}
+        <div class="p-4">
+          <h3 class="text-lg font-bold text-purple-700">{{ item.title }}</h3>
+          <p class="text-gray-700 mb-2">{{ item.text }}</p>
+          <form method="POST" action="/delete/{{ item.id }}" onsubmit="return confirm('Delete this content?');">
+            <button type="submit" class="absolute top-2 right-2 bg-red-500 text-white rounded px-2 py-1 text-xs hover:bg-red-600">Delete</button>
+          </form>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% if not content %}
+      <div class="text-center text-gray-400 mt-8 text-lg">No projects yet. Add something!</div>
+    {% endif %}
+
+    <!-- Social Handles Edit -->
+    <h2 class="text-xl sm:text-2xl font-bold text-purple-700 mb-4">Social Media Handles</h2>
+    <form method="POST" class="bg-white p-4 sm:p-6 rounded-xl shadow mb-6 flex flex-col sm:flex-row gap-4 items-end" autocomplete="off">
+      <input type="hidden" name="handle_form" value="1">
+      <div class="flex-1">
+        <label class="block text-gray-700 mb-2">Platform (e.g. LinkedIn, GitHub, Twitter, etc.)</label>
+        <input type="text" name="platform" class="w-full border border-gray-300 rounded px-3 py-2" placeholder="Platform name">
+      </div>
+      <div class="flex-1">
+        <label class="block text-gray-700 mb-2">URL</label>
+        <input type="text" name="handle_url" class="w-full border border-gray-300 rounded px-3 py-2" placeholder="https://...">
+      </div>
+      <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded font-semibold hover:bg-purple-700 transition">Add Handle</button>
+    </form>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-10">
+      {% for handle in handles %}
+      <div class="bg-white rounded shadow p-4 flex flex-col items-center relative">
+        <div class="text-lg font-bold text-purple-700 flex items-center gap-2">
+          {% if handle.platform.lower() == 'linkedin' %}
+            <svg class="w-6 h-6 text-blue-700" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.761 0 5-2.239 5-5v-14c0-2.761-2.239-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.268c-.966 0-1.75-.784-1.75-1.75s.784-1.75 1.75-1.75 1.75.784 1.75 1.75-.784 1.75-1.75 1.75zm13.5 11.268h-3v-5.604c0-1.337-.025-3.063-1.868-3.063-1.868 0-2.154 1.459-2.154 2.968v5.699h-3v-10h2.881v1.367h.041c.401-.761 1.381-1.563 2.841-1.563 3.039 0 3.601 2.001 3.601 4.599v5.597z"/></svg>
+          {% elif handle.platform.lower() == 'github' %}
+            <svg class="w-6 h-6 text-gray-800" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.415-4.042-1.415-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.084-.729.084-.729 1.205.084 1.84 1.236 1.84 1.236 1.07 1.834 2.809 1.304 3.495.997.108-.775.418-1.305.762-1.605-2.665-.305-5.466-1.334-5.466-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.553 3.297-1.23 3.297-1.23.653 1.653.242 2.873.119 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.803 5.624-5.475 5.921.43.372.823 1.102.823 2.222 0 1.606-.014 2.898-.014 3.293 0 .322.216.694.825.576 4.765-1.587 8.199-6.084 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          {% elif handle.platform.lower() == 'twitter' %}
+            <svg class="w-6 h-6 text-blue-400" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557a9.93 9.93 0 0 1-2.828.775 4.932 4.932 0 0 0 2.165-2.724c-.951.564-2.005.974-3.127 1.195a4.92 4.92 0 0 0-8.384 4.482c-4.086-.205-7.713-2.164-10.141-5.144a4.822 4.822 0 0 0-.666 2.475c0 1.708.87 3.216 2.188 4.099a4.904 4.904 0 0 1-2.229-.616c-.054 2.281 1.581 4.415 3.949 4.89a4.936 4.936 0 0 1-2.224.084c.627 1.956 2.444 3.377 4.6 3.417a9.867 9.867 0 0 1-6.102 2.104c-.396 0-.787-.023-1.175-.069a13.945 13.945 0 0 0 7.548 2.212c9.057 0 14.009-7.513 14.009-14.009 0-.213-.005-.425-.014-.636A10.025 10.025 0 0 0 24 4.557z"/></svg>
+          {% elif handle.platform.lower() == 'instagram' %}
+            <svg class="w-6 h-6 text-pink-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.334 3.608 1.308.974.974 1.246 2.241 1.308 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.334 2.633-1.308 3.608-.974.974-2.241 1.246-3.608 1.308-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.334-3.608-1.308-.974-.974-1.246-2.241-1.308-3.608C2.175 15.647 2.163 15.267 2.163 12s.012-3.584.07-4.85c.062-1.366.334-2.633 1.308-3.608.974-.974 2.241-1.246 3.608-1.308C8.416 2.175 8.796 2.163 12 2.163zm0-2.163C8.741 0 8.332.013 7.052.072 5.771.131 4.659.425 3.678 1.406c-.981.981-1.275 2.093-1.334 3.374C2.013 8.332 2 8.741 2 12c0 3.259.013 3.668.072 4.948.059 1.281.353 2.393 1.334 3.374.981.981 2.093 1.275 3.374 1.334C8.332 23.987 8.741 24 12 24s3.668-.013 4.948-.072c1.281-.059 2.393-.353 3.374-1.334.981-.981 1.275-2.093 1.334-3.374.059-1.28.072-1.689.072-4.948 0-3.259-.013-3.668-.072-4.948-.059-1.281-.353-2.393-1.334-3.374-.981-.981-2.093-1.275-3.374-1.334C15.668.013 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a3.999 3.999 0 1 1 0-7.998 3.999 3.999 0 0 1 0 7.998zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+          {% elif handle.platform.lower() == 'facebook' %}
+            <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 24 24"><path d="M22.675 0h-21.35C.6 0 0 .6 0 1.326v21.348C0 23.4.6 24 1.326 24H12.82v-9.294H9.692v-3.622h3.127V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.797.143v3.24l-1.918.001c-1.504 0-1.797.715-1.797 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116C23.4 24 24 23.4 24 22.674V1.326C24 .6 23.4 0 22.675 0z"/></svg>
+          {% elif handle.platform.lower() == 'youtube' %}
+            <svg class="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a2.994 2.994 0 0 0-2.112-2.112C19.354 3.5 12 3.5 12 3.5s-7.354 0-9.386.574A2.994 2.994 0 0 0 .502 6.186C0 8.219 0 12 0 12s0 3.781.502 5.814a2.994 2.994 0 0 0 2.112 2.112C4.646 20.5 12 20.5 12 20.5s7.354 0 9.386-.574a2.994 2.994 0 0 0 2.112-2.112C24 15.781 24 12 24 12s0-3.781-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          {% elif handle.platform.lower() == 'website' %}
+            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20M12 2a15.3 15.3 0 0 0 0 20"/></svg>
+          {% else %}
+            <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+          {% endif %}
+          <a href="{{ handle.url }}" target="_blank" class="hover:underline">{{ handle.platform }}</a>
+        </div>
+        <form method="POST" action="/delete_handle/{{ handle.id }}" onsubmit="return confirm('Delete this handle?');" class="absolute top-2 right-2">
+          <button type="submit" class="bg-red-500 text-white rounded px-2 py-1 text-xs hover:bg-red-600">Delete</button>
+        </form>
+      </div>
+      {% endfor %}
+    </div>
+  </main>
+</body>
+</html> 

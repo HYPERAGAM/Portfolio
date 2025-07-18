@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-purple-100 to-blue-50 min-h-screen flex items-center justify-center">
+  <form method="POST" class="bg-white p-8 rounded-xl shadow-lg w-full max-w-sm">
+    <h2 class="text-2xl font-bold text-purple-700 mb-6 text-center">Admin Login</h2>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="mb-4 text-{{ 'red' if category == 'danger' else 'green' }}-600">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    <div class="mb-4">
+      <label class="block text-gray-700 mb-2">Username</label>
+      <input type="text" name="username" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-300" required>
+    </div>
+    <div class="mb-6">
+      <label class="block text-gray-700 mb-2">Password</label>
+      <input type="password" name="password" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-300" required>
+    </div>
+    <button type="submit" class="w-full bg-purple-600 text-white py-2 rounded font-semibold hover:bg-purple-700 transition">Login</button>
+    <a href="/" class="block text-center text-gray-500 mt-4 hover:underline">Back to Portfolio</a>
+  </form>
+</body>
+</html> 
