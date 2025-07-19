@@ -220,6 +220,26 @@ def admin():
             db.session.add(SocialHandle(platform=platform, url=url))
             db.session.commit()
             flash('Social handle added!', 'success')
+    # Handle Project add
+    if request.method == 'POST' and 'project_form' in request.form:
+        title = request.form.get('title')
+        text = request.form.get('text')
+        image_url = request.form.get('image')
+        
+        # Handle project image upload
+        if 'image_file' in request.files and request.files['image_file'].filename != '':
+            file = request.files['image_file']
+            if allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                image_url = url_for('static', filename=filename)
+        
+        if title and text and image_url:
+            db.session.add(PortfolioContent(title=title, text=text, image=image_url))
+            db.session.commit()
+            flash('Project added!', 'success')
+        else:
+            flash('Please fill all required fields!', 'danger')
     return render_template('admin.html', about=about, contact=contact, skills=skills, experience=experience, content=content, handles=handles)
 
 @app.route('/delete/<int:id>', methods=['POST'])
